@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long merge(vector<long long> &vec,long long l,long long mid,long long r)
+{
+    long long i=l,j=mid+1;
+    long long sum =0;
+    vector<long long> vec2;
+    while(i<=mid && j<=r)
+    {
+        if(vec[j] > vec[i])
+        {
+            vec2.push_back(vec[i]);
+
+            long long mul = r-j+1;
+            sum+=(vec[i]*mul);
+            i++;
+        }
+        else
+        {
+            vec2.push_back(vec[j]);
+            j++;
+        }
+    }
+    while(i<=mid)
+    {
+        vec2.push_back(vec[i]);
+        i++;
+    }
+    while(j<=r)
+    {
+        vec2.push_back(vec[j]);
+        j++;
+    }
+    for(long long m=l,b=0;m<=r;m++,b++)
+    {
+        vec[m] = vec2[b];
+    }
+    return sum;
+}
+long long merge_sort(vector<long long> &vec,long long l,long long r)
+{
+    long long count =0;
+    if(r>l)
+    {
+        int mid = (l+r)/2;
+        long long count1=merge_sort(vec,l,mid);
+        long long count2=merge_sort(vec,mid+1,r);
+        long long count3= merge(vec,l,mid,r);
+        return (count1+count2+count3);
+    }
+    return count;
+}
+int main() {
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        long long n;
+        cin>>n;
+        vector<long long> vec;
+        for(long long i=0;i<n;i++)
+        {
+            long long input;
+            cin>>input;
+            vec.push_back(input);
+            
+        }
+        long long count = merge_sort(vec,0,vec.size()-1);
+        cout<<count<<endl;
+        
+    }
+
+}
